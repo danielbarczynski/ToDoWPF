@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ToDo;
+using ToDo.Models;
 
 namespace ToDo
 {
@@ -20,7 +21,6 @@ namespace ToDo
     /// </summary>
     public partial class Login : Window
     {
-
         public Login()
         {
             InitializeComponent();
@@ -28,8 +28,19 @@ namespace ToDo
 
         private void SubmitClick(object sender, RoutedEventArgs e)
         {
-            MainWindowNav();
-            Close();
+            var username = Username.Text;
+            var password = Password.Text;
+
+            using (AppDbContext context = new AppDbContext())
+            {
+                bool user = context.Users.Any(x => x.Username == username && x.Password == password);
+
+                if (user)
+                {
+                    MainWindowNav();
+                    Close();
+                }
+            }
         }
 
         public void MainWindowNav()

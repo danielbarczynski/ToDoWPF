@@ -33,9 +33,9 @@
         <TextBlock HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1" Text="Login" FontSize="30" Margin="0 0 0 20" Foreground="#FF3BDADA"></TextBlock>
 
         <TextBlock HorizontalAlignment="Center" Grid.Row="3" Grid.Column="1" Text="Username" Margin="0 0 0 20"></TextBlock>
-        <TextBox Grid.Row="4" Grid.Column="1" Margin="0 0 0 20"></TextBox>
+        <TextBox Grid.Row="4" Grid.Column="1" Margin="0 0 0 20" Name="Username" ></TextBox>
         <TextBlock HorizontalAlignment="Center" Grid.Row="5" Grid.Column="1" Text="Password" Margin="0 0 0 20"></TextBlock>
-        <TextBox Grid.Row="6" Grid.Column="1"></TextBox>
+        <TextBox Grid.Row="6" Grid.Column="1" Name="Password"></TextBox>
         <Button Click="SubmitClick" Grid.Row="7" Grid.Column="1" Content="Submit" HorizontalAlignment="Center" Padding="5" Margin="0 10"></Button>
         <TextBlock Grid.Row="8" Grid.Column="1" HorizontalAlignment="Center">No account? <Hyperlink Foreground="#FF3BDADA" Click="SignUpWindowClick"> Sing Up! </Hyperlink></TextBlock>
     </Grid>
