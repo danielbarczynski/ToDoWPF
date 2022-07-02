@@ -27,6 +27,7 @@
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="20"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1" Text="Sing Up" FontSize="30" Margin="0 0 0 20" Foreground="#FF3BDADA"></TextBlock>
@@ -35,5 +36,6 @@
         <TextBlock HorizontalAlignment="Center" Grid.Row="5" Grid.Column="1" Text="Password" Margin="0 0 0 20"></TextBlock>
         <TextBox Grid.Row="6" Grid.Column="1"></TextBox>
         <Button Click="SubmitClick" Grid.Row="7" Grid.Column="1" Content="Submit" HorizontalAlignment="Center" Padding="5" Margin="0 10"></Button>
+        <TextBlock Grid.Row="8" Grid.Column="1" HorizontalAlignment="Center">Have an account? <Hyperlink Foreground="#FF3BDADA" Click="LoginWindowClick"> Log in! </Hyperlink></TextBlock>
     </Grid>
 </Window>

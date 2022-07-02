@@ -35,5 +35,17 @@ namespace ToDo
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
         }
+
+        public void LoginWindowClick(object sender, RoutedEventArgs e)
+        {
+            LoginWindowNav();
+            Close();
+        }
+
+        private void LoginWindowNav()
+        {
+            Window login = new Login();
+            login.Show();
+        }
     }
 }
