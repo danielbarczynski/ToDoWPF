@@ -4,17 +4,18 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using ToDo.Models;
 
-namespace ToDo
+namespace ToDo.Database
 {
-    public class AppDbContext : DbContext 
+    public class AppDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<TaskModel> Tasks { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if(!optionsBuilder.IsConfigured)
+            if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer("Data Source=(localdb)\\todo;Initial Catalog=todo;");
             }
