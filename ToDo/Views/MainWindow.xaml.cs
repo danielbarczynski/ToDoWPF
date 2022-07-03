@@ -58,7 +58,7 @@ namespace ToDo
         }
 
         public void ReadTask()
-        {
+        {           
             using (AppDbContext appDbContext = new AppDbContext())
             {
                 Tasks = appDbContext.Tasks.ToList();
@@ -70,16 +70,22 @@ namespace ToDo
         {
             using (AppDbContext appDbContext = new AppDbContext())
             {
-                TaskModel selectedTask = currentTasks.SelectedItem as TaskModel;
-
-                if (selectedTask != null)
+                var checkbox = sender as CheckBox;
+                
+                if (checkbox != null)
                 {
-                    TaskModel taskModel = appDbContext.Tasks.Find(selectedTask.Id);
+                    var task = checkbox.DataContext as TaskModel;
+                    TaskModel taskModel = appDbContext.Tasks.Find(task.Id);
                     appDbContext.Tasks.Remove(taskModel);
                     appDbContext.SaveChanges();
                     ReadTask();
                 }
             }
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
