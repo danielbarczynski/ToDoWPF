@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using ToDo.Database;
 using ToDo.Models;
 
@@ -23,9 +24,16 @@ namespace ToDo
     public partial class MainWindow : Window
     {
         public List<TaskModel> Tasks { get; private set; }
-
+        void timer_Tick(object sender, EventArgs e)
+        {
+            Today.Text = DateTime.Now.ToString("F");
+        }
         public MainWindow()
         {
+            DispatcherTimer LiveTime = new DispatcherTimer();
+            LiveTime.Interval = TimeSpan.FromSeconds(1);
+            LiveTime.Tick += timer_Tick;
+            LiveTime.Start();
             InitializeComponent();
             ReadTask();
         }
@@ -55,6 +63,22 @@ namespace ToDo
             {
                 Tasks = appDbContext.Tasks.ToList();
                 currentTasks.ItemsSource = Tasks;
+            }
+        }
+
+        public void DeleteTask(object sender, RoutedEventArgs e)
+        {
+            using (AppDbContext appDbContext = new AppDbContext())
+            {
+                TaskModel selectedTask = currentTasks.SelectedItem as TaskModel;
+
+                if (selectedTask != null)
+                {
+                    TaskModel taskModel = appDbContext.Tasks.Find(selectedTask.Id);
+                    appDbContext.Tasks.Remove(taskModel);
+                    appDbContext.SaveChanges();
+                    ReadTask();
+                }
             }
         }
     }
