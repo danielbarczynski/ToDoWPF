@@ -7,12 +7,10 @@ using System.Threading.Tasks;
 
 namespace ToDo.Models
 {
-    public class TaskModel
+    public class CategoryModel
     {
-        [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        public int CategoryModelId { get; set; }
-        public virtual CategoryModel CategoryModel { get; set; }
+        public virtual IEnumerable<TaskModel> Tasks{ get; set; }
     }
 }

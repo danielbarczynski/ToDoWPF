@@ -30,10 +30,10 @@ namespace ToDo
         }
         public MainWindow()
         {
-            //DispatcherTimer LiveTime = new DispatcherTimer();
-            //LiveTime.Interval = TimeSpan.FromSeconds(1);
-            //LiveTime.Tick += timer_Tick;
-            //LiveTime.Start();
+            DispatcherTimer LiveTime = new DispatcherTimer();
+            LiveTime.Interval = TimeSpan.FromSeconds(1);
+            LiveTime.Tick += timer_Tick;
+            LiveTime.Start();
             InitializeComponent();
             ReadTask();
         }
