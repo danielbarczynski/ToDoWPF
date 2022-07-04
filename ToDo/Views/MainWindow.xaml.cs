@@ -53,13 +53,14 @@ namespace ToDo
             }
         }
 
-        public void CreateCategory()
+        public void CreateCategory(object sender, RoutedEventArgs e)
         {
             using (AppDbContext appDbContext = new AppDbContext())
             {
                 var category = newTask.Text;
                 appDbContext.Categories.Add(new CategoryModel() { CategoryName = category });
                 appDbContext.SaveChanges();
+                ReadCategory();
                 newTask.Clear();
             }
         }

@@ -28,10 +28,12 @@
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="20"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Name="Today" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="3" FontSize="30" TextAlignment="Center" Margin="0 0 0 5"></TextBlock>
 
-        <TextBlock Grid.Column="1" Grid.Row="1" Text="Categories" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 5"></TextBlock>
-        <ListView HorizontalContentAlignment="Center" Name="categoryList" Foreground="AntiqueWhite" Grid.Column="1" Width="180" Grid.Row="2" Background="#B2290808" Margin="0, 0, 5, 0" Grid.RowSpan="2">
+        <TextBlock  Grid.Column="1" Grid.Row="1" Text="Categories" FontSize="30"  VerticalAlignment="Center" Margin="10 0 0 5"></TextBlock>
+        <Button Click="CreateCategory" Content="+" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" FontSize="30" Width="50"></Button>
+        <TextBlock Name="Today" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="3" FontSize="30" TextAlignment="Center" Margin="0 0 0 5"></TextBlock>
+        
+        <ListView  Name="categoryList" Foreground="AntiqueWhite" Grid.Column="1" Width="200" Grid.Row="2" Background="#B2290808" Margin="0, 5, 5, 0" Grid.RowSpan="2">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <WrapPanel>
@@ -40,7 +42,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <ListView Foreground="AntiqueWhite" Name="currentTasks" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="3" Background="#66290808">
+        <ListView Foreground="AntiqueWhite" Name="currentTasks" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="3" Background="#66290808" Margin="0 5 0 0">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <WrapPanel>
