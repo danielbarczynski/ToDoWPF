@@ -24,6 +24,8 @@ namespace ToDo
     public partial class MainWindow : Window
     {
         public List<TaskModel> Tasks { get; private set; }
+        public List<CategoryModel> Categories { get; private set; }
+
         void timer_Tick(object sender, EventArgs e)
         {
             Today.Text = DateTime.Now.ToString("F");
@@ -36,6 +38,7 @@ namespace ToDo
             LiveTime.Start();
             InitializeComponent();
             ReadTask();
+            ReadCategory();
         }
 
         public void CreateTask()
@@ -44,6 +47,17 @@ namespace ToDo
             {
                 var task = newTask.Text;
                 appDbContext.Tasks.Add(new TaskModel() { Name = task });
+                appDbContext.SaveChanges(); // brak categorymodelId
+                newTask.Clear();
+            }
+        }
+
+        public void CreateCategory()
+        {
+            using (AppDbContext appDbContext = new AppDbContext())
+            {
+                var category = newTask.Text;
+                appDbContext.Categories.Add(new CategoryModel() { CategoryName = category });
                 appDbContext.SaveChanges();
                 newTask.Clear();
             }
@@ -76,6 +90,15 @@ namespace ToDo
             }
         }
 
+        public void ReadCategory()
+        {
+            using (AppDbContext appDbContext = new AppDbContext())
+            {
+                Categories = appDbContext.Categories.ToList();
+                currentCategories.ItemsSource = Categories;
+                categoryList.ItemsSource = Categories;
+            }
+        }
         public void UpdateTask()
         {
             using (AppDbContext appDbContext = new AppDbContext())

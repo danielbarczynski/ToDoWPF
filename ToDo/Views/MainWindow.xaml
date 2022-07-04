@@ -28,16 +28,14 @@
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="20"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Name="Today" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="3" FontSize="30" TextAlignment="Center" Margin="0 0 0 20"></TextBlock>
+        <TextBlock Name="Today" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="3" FontSize="30" TextAlignment="Center" Margin="0 0 0 5"></TextBlock>
 
-        <!--<TextBlock Grid.Column="1" Grid.Row="2"  Grid.RowSpan="2" Text="Categories" FontSize="20" HorizontalAlignment="Center"></TextBlock>-->
-        <ListView Foreground="AntiqueWhite" Grid.Column="1" Width="180" Grid.Row="2" Background="#B2290808" Margin="0, 0, 5, 0" Grid.RowSpan="2">
-            <GridViewColumn >
-            </GridViewColumn>
+        <TextBlock Grid.Column="1" Grid.Row="1" Text="Categories" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 5"></TextBlock>
+        <ListView HorizontalContentAlignment="Center" Name="categoryList" Foreground="AntiqueWhite" Grid.Column="1" Width="180" Grid.Row="2" Background="#B2290808" Margin="0, 0, 5, 0" Grid.RowSpan="2">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <WrapPanel>
-                        <TextBlock Text="Categories"/>
+                        <TextBlock Text="{Binding CategoryName}"/>
                     </WrapPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -53,6 +51,12 @@
             </ListView.ItemTemplate>
         </ListView>
         <TextBox KeyDown="newTask_KeyDown" Name="newTask" Grid.Column="2" Grid.Row="3" FontSize="20" Background="#33100303" Foreground="#FFEEF7F7" Grid.ColumnSpan="3" Margin="0, 5, 0, 0"></TextBox>
-        <!--<Button Grid.Column="3" Grid.Row="3" Content="Add" Background="#7F441818" Foreground="#FFD8EFE7"></Button>-->
+        <ComboBox Name="currentCategories" Grid.Column="4" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120"  SelectedIndex="0" Margin="0, 5, 0, 0">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding CategoryName}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
     </Grid>
 </Window>
