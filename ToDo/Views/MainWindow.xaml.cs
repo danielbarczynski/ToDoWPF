@@ -30,10 +30,10 @@ namespace ToDo
         }
         public MainWindow()
         {
-            DispatcherTimer LiveTime = new DispatcherTimer();
-            LiveTime.Interval = TimeSpan.FromSeconds(1);
-            LiveTime.Tick += timer_Tick;
-            LiveTime.Start();
+            //DispatcherTimer LiveTime = new DispatcherTimer();
+            //LiveTime.Interval = TimeSpan.FromSeconds(1);
+            //LiveTime.Tick += timer_Tick;
+            //LiveTime.Start();
             InitializeComponent();
             ReadTask();
         }
@@ -45,12 +45,22 @@ namespace ToDo
                 var task = newTask.Text;
                 appDbContext.Tasks.Add(new TaskModel() { Name = task });
                 appDbContext.SaveChanges();
+                newTask.Clear();
             }
         }
 
         private void newTask_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            if (currentTasks.SelectedItem != null)
+            {
+                if (e.Key == Key.Return)
+                {
+                    UpdateTask();
+                    ReadTask();
+                }
+            }
+
+            else if (e.Key == Key.Return)
             {
                 CreateTask();
                 ReadTask();
@@ -58,11 +68,28 @@ namespace ToDo
         }
 
         public void ReadTask()
-        {           
+        {
             using (AppDbContext appDbContext = new AppDbContext())
             {
                 Tasks = appDbContext.Tasks.ToList();
                 currentTasks.ItemsSource = Tasks;
+            }
+        }
+
+        public void UpdateTask()
+        {
+            using (AppDbContext appDbContext = new AppDbContext())
+            {
+                TaskModel taskModel = currentTasks.SelectedItem as TaskModel;
+                var task = newTask.Text;
+
+                if (task != null)
+                {
+                    TaskModel selectedTask = appDbContext.Tasks.Find(taskModel.Id);
+                    selectedTask.Name = task;
+                    appDbContext.SaveChanges();
+                    newTask.Clear();
+                }
             }
         }
 
@@ -71,7 +98,7 @@ namespace ToDo
             using (AppDbContext appDbContext = new AppDbContext())
             {
                 var checkbox = sender as CheckBox;
-                
+
                 if (checkbox != null)
                 {
                     var task = checkbox.DataContext as TaskModel;
@@ -81,11 +108,6 @@ namespace ToDo
                     ReadTask();
                 }
             }
-        }
-
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
