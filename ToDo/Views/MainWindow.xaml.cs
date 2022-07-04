@@ -45,9 +45,10 @@ namespace ToDo
         {
             using (AppDbContext appDbContext = new AppDbContext())
             {
-                var task = newTask.Text;
-                appDbContext.Tasks.Add(new TaskModel() { Name = task });
-                appDbContext.SaveChanges(); // brak categorymodelId
+                CategoryModel categoryModel = currentCategories.SelectedItem as CategoryModel;
+                var task = newTask.Text; 
+                appDbContext.Tasks.Add(new TaskModel() { Name = task, CategoryModelId = categoryModel.CategoryId});
+                appDbContext.SaveChanges(); 
                 newTask.Clear();
             }
         }
