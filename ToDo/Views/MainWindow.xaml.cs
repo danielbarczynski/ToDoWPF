@@ -161,7 +161,7 @@ namespace ToDo
             }
         }
 
-        public void DeleteCategory()
+        private void DeleteCategory(object sender, MouseButtonEventArgs e)
         {
             using (AppDbContext appDbContext = new AppDbContext())
             {

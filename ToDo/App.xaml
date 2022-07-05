@@ -5,7 +5,7 @@
              StartupUri="Views\MainWindow.xaml">
     <Application.Resources>
         <ContextMenu x:Key="Menu">
-            <MenuItem Header="Delete" Click="DeleteCategory"></MenuItem>
+            <MenuItem Header="Delete"></MenuItem>
         </ContextMenu>
     </Application.Resources>
 </Application>
