@@ -46,9 +46,9 @@ namespace ToDo
             using (AppDbContext appDbContext = new AppDbContext())
             {
                 CategoryModel categoryModel = currentCategories.SelectedItem as CategoryModel;
-                var task = newTask.Text; 
-                appDbContext.Tasks.Add(new TaskModel() { Name = task, CategoryModelId = categoryModel.CategoryId});
-                appDbContext.SaveChanges(); 
+                var task = newTask.Text;
+                appDbContext.Tasks.Add(new TaskModel() { Name = task, CategoryModelId = categoryModel.CategoryId });
+                appDbContext.SaveChanges();
                 newTask.Clear();
             }
         }
@@ -158,6 +158,18 @@ namespace ToDo
                     appDbContext.SaveChanges();
                     ReadTask();
                 }
+            }
+        }
+
+        public void DeleteCategory()
+        {
+            using (AppDbContext appDbContext = new AppDbContext())
+            {
+                CategoryModel categoryModel = categoryList.SelectedItem as CategoryModel;
+                CategoryModel selectedCategory = appDbContext.Categories.Find(categoryModel.CategoryId);
+                appDbContext.Categories.Remove(selectedCategory);
+                appDbContext.SaveChanges();
+                ReadCategory();
             }
         }
     }
