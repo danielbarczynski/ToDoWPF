@@ -76,6 +76,14 @@ namespace ToDo
                 }
             }
 
+            else if (categoryList.SelectedItem != null)
+            {
+                if (e.Key == Key.Return)
+                {
+                    UpdateCategory();
+                    ReadCategory();
+                }
+            }
             else if (e.Key == Key.Return)
             {
                 CreateTask();
@@ -114,6 +122,24 @@ namespace ToDo
                     selectedTask.Name = task;
                     appDbContext.SaveChanges();
                     newTask.Clear();
+                }
+            }
+        }
+
+        public void UpdateCategory()
+        {
+            using (AppDbContext appDbContext = new AppDbContext())
+            {
+                CategoryModel categoryModel = categoryList.SelectedItem as CategoryModel;
+                var category = newTask.Text;
+
+                if (category != null)
+                {
+                    CategoryModel selectedCategory = appDbContext.Categories.Find(categoryModel.CategoryId);
+                    selectedCategory.CategoryName = category;
+                    appDbContext.SaveChanges();
+                    newTask.Clear();
+                    ReadCategory();
                 }
             }
         }
