@@ -172,5 +172,16 @@ namespace ToDo
                 ReadCategory();
             }
         }
+
+        private void ShowTasks(object sender, SelectionChangedEventArgs e)
+        {
+            using (AppDbContext appDbContext = new AppDbContext())
+            {
+                CategoryModel categoryModel = categoryList.SelectedItem as CategoryModel;
+                var tasks = Tasks.AsEnumerable();
+                tasks = appDbContext.Tasks.ToList().Where(x => x.CategoryModelId == categoryModel.CategoryId);
+                currentTasks.ItemsSource = tasks;
+            }
+        }
     }
 }
