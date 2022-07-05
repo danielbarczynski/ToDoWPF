@@ -4,8 +4,8 @@
              xmlns:local="clr-namespace:ToDo"
              StartupUri="Views\MainWindow.xaml">
     <Application.Resources>
-        <ContextMenu x:Key="Menu">
+        <!--<ContextMenu x:Key="Menu">
             <MenuItem Header="Delete"></MenuItem>
-        </ContextMenu>
+        </ContextMenu>-->
     </Application.Resources>
 </Application>

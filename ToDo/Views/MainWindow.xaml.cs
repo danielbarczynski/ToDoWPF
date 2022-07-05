@@ -37,8 +37,18 @@ namespace ToDo
             LiveTime.Tick += timer_Tick;
             LiveTime.Start();
             InitializeComponent();
-            ReadTask();
+
+            using (AppDbContext appDbContext = new AppDbContext())
+            {
+                if (!appDbContext.Categories.Any(x => x.CategoryName == "All"))
+                {
+                    appDbContext.Categories.Add(new CategoryModel() { CategoryName = "All" });
+                    appDbContext.SaveChanges();
+                }
+            }
+
             ReadCategory();
+            ReadTask();
         }
 
         public void CreateTask()
@@ -46,7 +56,7 @@ namespace ToDo
             using (AppDbContext appDbContext = new AppDbContext())
             {
                 CategoryModel categoryModel = currentCategories.SelectedItem as CategoryModel;
-                var task = newTask.Text;
+                var task = newTask.Text;               
                 appDbContext.Tasks.Add(new TaskModel() { Name = task, CategoryModelId = categoryModel.CategoryId });
                 appDbContext.SaveChanges();
                 newTask.Clear();
@@ -179,8 +189,16 @@ namespace ToDo
             {
                 CategoryModel categoryModel = categoryList.SelectedItem as CategoryModel;
                 var tasks = Tasks.AsEnumerable();
-                tasks = appDbContext.Tasks.ToList().Where(x => x.CategoryModelId == categoryModel.CategoryId);
-                currentTasks.ItemsSource = tasks;
+
+                if (categoryModel.CategoryName == "All")
+                {
+                    ReadTask();
+                }
+                else
+                {
+                    tasks = appDbContext.Tasks.ToList().Where(x => x.CategoryModelId == categoryModel.CategoryId);
+                    currentTasks.ItemsSource = tasks;
+                }
             }
         }
     }
