@@ -128,6 +128,7 @@ namespace ToDo
                 categoryList.ItemsSource = Categories;
             }
         }
+
         public void UpdateTask()
         {
             using (AppDbContext appDbContext = new AppDbContext())

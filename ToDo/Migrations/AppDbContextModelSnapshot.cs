@@ -34,7 +34,7 @@ namespace ToDo.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("ToDo.Models.TaskModel", b =>
@@ -55,7 +55,7 @@ namespace ToDo.Migrations
 
                     b.HasIndex("CategoryModelId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Tasks", (string)null);
                 });
 
             modelBuilder.Entity("ToDo.Models.User", b =>
@@ -74,7 +74,7 @@ namespace ToDo.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("ToDo.Models.TaskModel", b =>
