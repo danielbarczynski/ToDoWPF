@@ -56,9 +56,17 @@ namespace ToDo
             using (AppDbContext appDbContext = new AppDbContext())
             {
                 CategoryModel categoryModel = currentCategories.SelectedItem as CategoryModel;
-                var task = newTask.Text;               
-                appDbContext.Tasks.Add(new TaskModel() { Name = task, CategoryModelId = categoryModel.CategoryId });
-                appDbContext.SaveChanges();
+                var task = newTask.Text;
+                try
+                {
+                    appDbContext.Tasks.Add(new TaskModel() { Name = task, CategoryModelId = categoryModel.CategoryId });
+                    appDbContext.SaveChanges();
+                }
+                catch (NullReferenceException)
+                {
+
+                }
+
                 newTask.Clear();
             }
         }
@@ -77,24 +85,25 @@ namespace ToDo
 
         private void newTask_KeyDown(object sender, KeyEventArgs e)
         {
-            if (currentTasks.SelectedItem != null)
-            {
-                if (e.Key == Key.Return)
-                {
-                    UpdateTask();
-                    ReadTask();
-                }
-            }
+            //if (currentTasks.SelectedItem != null)
+            //{
+            //    if (e.Key == Key.Return)
+            //    {
+            //        UpdateTask();
+            //        ReadTask();
+            //    }
+            //}
 
-            else if (categoryList.SelectedItem != null)
-            {
-                if (e.Key == Key.Return)
-                {
-                    UpdateCategory();
-                    ReadCategory();
-                }
-            }
-            else if (e.Key == Key.Return)
+            //else if (categoryList.SelectedItem != null)
+            //{
+            //    if (e.Key == Key.Return)
+            //    {
+            //        UpdateCategory();
+            //        ReadCategory();
+            //    }
+            //}
+            //else
+             if (e.Key == Key.Return)
             {
                 CreateTask();
                 ReadTask();
@@ -190,15 +199,24 @@ namespace ToDo
                 CategoryModel categoryModel = categoryList.SelectedItem as CategoryModel;
                 var tasks = Tasks.AsEnumerable();
 
-                if (categoryModel.CategoryName == "All")
+                try
                 {
-                    ReadTask();
+                    if (categoryModel.CategoryName == "All")
+                    {
+                        ReadTask();
+                    }
+                    else
+                    {
+                        tasks = appDbContext.Tasks.ToList().Where(x => x.CategoryModelId == categoryModel.CategoryId);
+                        currentTasks.ItemsSource = tasks;
+                    }
                 }
-                else
+                catch (NullReferenceException)
                 {
-                    tasks = appDbContext.Tasks.ToList().Where(x => x.CategoryModelId == categoryModel.CategoryId);
-                    currentTasks.ItemsSource = tasks;
+
                 }
+               
+               
             }
         }
     }
