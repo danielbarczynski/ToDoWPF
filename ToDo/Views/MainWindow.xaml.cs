@@ -123,9 +123,16 @@ namespace ToDo
         {
             using (AppDbContext appDbContext = new AppDbContext())
             {
+                //foreach (var item in appDbContext.Categories)
+                //{
+                //    item.NumberOfTasks = item.Tasks.Count();
+                //}
+
+                var cat = appDbContext.Categories.Select(x => new CategoryModel() { CategoryName = x.CategoryName, CategoryId = x.CategoryId, NumberOfTasks = x.Tasks.Count() });
+                var catListing = cat.ToList();
                 Categories = appDbContext.Categories.ToList();
-                currentCategories.ItemsSource = Categories;
-                categoryList.ItemsSource = Categories;
+                currentCategories.ItemsSource = catListing;
+                categoryList.ItemsSource = catListing;
             }
         }
 

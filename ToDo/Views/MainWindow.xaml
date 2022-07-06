@@ -38,6 +38,7 @@
                 <DataTemplate>
                     <WrapPanel>
                         <TextBlock Text="{Binding CategoryName}"/>
+                        <TextBlock Text="{Binding NumberOfTasks}"/>
                     </WrapPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

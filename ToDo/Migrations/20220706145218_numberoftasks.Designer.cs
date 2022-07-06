@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ToDo.Database;
 
@@ -10,9 +11,10 @@ using ToDo.Database;
 namespace ToDo.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220706145218_numberoftasks")]
+    partial class numberoftasks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,9 +34,6 @@ namespace ToDo.Migrations
                     b.Property<string>("CategoryName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NumberOfTasks")
-                        .HasColumnType("int");
-
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
@@ -53,6 +52,9 @@ namespace ToDo.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NumberOfTasks")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
