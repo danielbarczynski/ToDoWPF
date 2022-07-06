@@ -38,7 +38,7 @@
                 <DataTemplate>
                     <WrapPanel>
                         <TextBlock Text="{Binding CategoryName}"/>
-                        <TextBlock Text="{Binding NumberOfTasks}"/>
+                        <TextBlock Text="{Binding NumberOfTasks, StringFormat=({0})}" Margin="3 0 0 0"/>
                     </WrapPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
