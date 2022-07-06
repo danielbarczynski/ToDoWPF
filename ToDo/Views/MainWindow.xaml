@@ -57,7 +57,7 @@
         <ComboBox Name="currentCategories" Grid.Column="4" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120"  SelectedIndex="0" Margin="0, 5, 0, 0">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding CategoryName}"/>
+                    <TextBlock Text="{Binding CategoryListingName}"/>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>

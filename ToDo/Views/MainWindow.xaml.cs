@@ -130,6 +130,12 @@ namespace ToDo
                     NumberOfTasks = x.Tasks.Count()
                 });
 
+                //if(categories.Any(x => x.CategoryListingName == "All"))
+                //{
+                    
+                //}
+       
+
                 var cat = categories.ToList();
                 //foreach (var item in Categories)
                 //{
