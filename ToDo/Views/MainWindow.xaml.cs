@@ -103,7 +103,7 @@ namespace ToDo
             //    }
             //}
             //else
-             if (e.Key == Key.Return)
+            if (e.Key == Key.Return)
             {
                 CreateTask();
                 ReadTask();
@@ -123,9 +123,22 @@ namespace ToDo
         {
             using (AppDbContext appDbContext = new AppDbContext())
             {
-                Categories = appDbContext.Categories.ToList();
-                currentCategories.ItemsSource = Categories;
-                categoryList.ItemsSource = Categories;
+                var categories = appDbContext.Categories.Select(x => new CategoryListingModel
+                {
+                    CategoryListingId = x.CategoryId,
+                    CategoryListingName = x.CategoryName,
+                    NumberOfTasks = x.Tasks.Count()
+                });
+
+                var cat = categories.ToList();
+                //foreach (var item in Categories)
+                //{
+                //    int countedTasks = item.Tasks.Count();
+                //    item.NumberOfTasks = countedTasks;
+                //}
+
+                currentCategories.ItemsSource = cat;
+                categoryList.ItemsSource = cat;
             }
         }
         public void UpdateTask()
@@ -215,8 +228,8 @@ namespace ToDo
                 {
 
                 }
-               
-               
+
+
             }
         }
     }

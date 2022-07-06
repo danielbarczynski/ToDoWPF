@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ToDo.Database;
 
@@ -10,9 +11,10 @@ using ToDo.Database;
 namespace ToDo.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220706121125_categorylistingmodel")]
+    partial class categorylistingmodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,25 +22,6 @@ namespace ToDo.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("ToDo.Models.CategoryListingModel", b =>
-                {
-                    b.Property<int>("CategoryListingId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryListingId"), 1L, 1);
-
-                    b.Property<string>("CategoryListingName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("NumberOfTasks")
-                        .HasColumnType("int");
-
-                    b.HasKey("CategoryListingId");
-
-                    b.ToTable("ListingCategories");
-                });
 
             modelBuilder.Entity("ToDo.Models.CategoryModel", b =>
                 {
