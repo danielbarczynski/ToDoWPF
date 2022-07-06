@@ -55,12 +55,14 @@ namespace ToDo
         {
             using (AppDbContext appDbContext = new AppDbContext())
             {
-                CategoryModel categoryModel = currentCategories.SelectedItem as CategoryModel;
+                CategoryModel categoryModel = categoryList.SelectedItem as CategoryModel;
                 var task = newTask.Text;
                 try
                 {
                     appDbContext.Tasks.Add(new TaskModel() { Name = task, CategoryModelId = categoryModel.CategoryId });
                     appDbContext.SaveChanges();
+                    ReadCategory();
+                    ReadTask();
                 }
                 catch (NullReferenceException)
                 {
@@ -79,6 +81,7 @@ namespace ToDo
                 appDbContext.Categories.Add(new CategoryModel() { CategoryName = category });
                 appDbContext.SaveChanges();
                 ReadCategory();
+                ReadTask();
                 newTask.Clear();
             }
         }
@@ -106,6 +109,7 @@ namespace ToDo
             if (e.Key == Key.Return)
             {
                 CreateTask();
+                ReadCategory();
                 ReadTask();
             }
         }
@@ -116,6 +120,7 @@ namespace ToDo
             {
                 Tasks = appDbContext.Tasks.ToList();
                 currentTasks.ItemsSource = Tasks;
+                categoryList.SelectedIndex = 0;
             }
         }
 
@@ -123,7 +128,7 @@ namespace ToDo
         {
             using (AppDbContext appDbContext = new AppDbContext())
             {
-                 var cat = appDbContext.Categories.Select(x => new CategoryModel()
+                var cat = appDbContext.Categories.Select(x => new CategoryModel()
                 { CategoryName = x.CategoryName, CategoryId = x.CategoryId, NumberOfTasks = x.Tasks.Count() });
                 var catList = cat.ToList();
                 int countedTasks = 0;
@@ -137,7 +142,7 @@ namespace ToDo
                 all.NumberOfTasks = countedTasks;
 
                 Categories = appDbContext.Categories.ToList();
-                currentCategories.ItemsSource = catList;
+                //currentCategories.ItemsSource = catList;
                 categoryList.ItemsSource = catList;
             }
         }
@@ -155,6 +160,8 @@ namespace ToDo
                     selectedTask.Name = task;
                     appDbContext.SaveChanges();
                     newTask.Clear();
+                    ReadCategory();
+                    ReadTask();
                 }
             }
         }
@@ -173,6 +180,7 @@ namespace ToDo
                     appDbContext.SaveChanges();
                     newTask.Clear();
                     ReadCategory();
+                    ReadTask();
                 }
             }
         }
@@ -189,6 +197,7 @@ namespace ToDo
                     TaskModel taskModel = appDbContext.Tasks.Find(task.Id);
                     appDbContext.Tasks.Remove(taskModel);
                     appDbContext.SaveChanges();
+                    ReadCategory();
                     ReadTask();
                 }
             }
@@ -203,6 +212,7 @@ namespace ToDo
                 appDbContext.Categories.Remove(selectedCategory);
                 appDbContext.SaveChanges();
                 ReadCategory();
+                ReadTask();
             }
         }
 
