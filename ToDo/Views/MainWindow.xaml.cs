@@ -259,15 +259,31 @@ namespace ToDo
             return null;
         }
 
-        private void taskTextBox_KeyDown(object sender, KeyEventArgs e)
+        private void changeTaskName(object sender, KeyEventArgs e)
         {
             object o = currentTasks.SelectedItem;
             ListViewItem lvi = (ListViewItem)currentTasks.ItemContainerGenerator.ContainerFromItem(o);
 
             TextBox textBox = FindByName("taskTextBox", lvi) as TextBox;
+            TextBlock textBlock = FindByName("taskTextBlock", lvi) as TextBlock;
+            CheckBox checkBox = FindByName("taskCheckBox", lvi) as CheckBox;
+
+            textBox.Visibility = Visibility.Visible;
+            textBlock.Visibility = Visibility.Hidden;
+            checkBox.Visibility = Visibility.Collapsed;
+
             TaskModel taskModel = currentTasks.SelectedItem as TaskModel;
 
-            if (e.Key == Key.Return)
+            if (e.Key == Key.F2)
+            {
+                using (AppDbContext appDbContext = new AppDbContext())
+                {
+                    TaskModel selectedTask = appDbContext.Tasks.Find(taskModel.Id);
+                    textBox.Text = selectedTask.Name;
+                }
+            }
+
+            else if (e.Key == Key.Return)
             {
                 using (AppDbContext appDbContext = new AppDbContext())
                 {
@@ -281,27 +297,38 @@ namespace ToDo
             }
         }
 
-        private void changeTaskName(object sender, KeyEventArgs e)
+        private void changeCategoryName(object sender, KeyEventArgs e)
         {
+            object o = categoryList.SelectedItem;
+            ListViewItem lvi = (ListViewItem)categoryList.ItemContainerGenerator.ContainerFromItem(o);
+
+            TextBox textBox = FindByName("categoryTextBox", lvi) as TextBox;
+            TextBlock textBlock = FindByName("categoryTextBlock", lvi) as TextBlock;
+
+            textBox.Visibility = Visibility.Visible;
+            textBlock.Visibility = Visibility.Hidden;
+
+            CategoryModel categoryModel = categoryList.SelectedItem as CategoryModel;
+
             if (e.Key == Key.F2)
             {
-                object o = currentTasks.SelectedItem;
-                ListViewItem lvi = (ListViewItem)currentTasks.ItemContainerGenerator.ContainerFromItem(o);
-
-                TextBox textBox = FindByName("taskTextBox", lvi) as TextBox;
-                TextBlock textBlock = FindByName("taskTextBlock", lvi) as TextBlock;
-                CheckBox checkBox = FindByName("taskCheckBox", lvi) as CheckBox;
-
-                textBox.Visibility = Visibility.Visible;
-                textBlock.Visibility = Visibility.Hidden;
-                checkBox.Visibility = Visibility.Collapsed;
-
-                TaskModel taskModel = currentTasks.SelectedItem as TaskModel;
-
                 using (AppDbContext appDbContext = new AppDbContext())
                 {
-                    TaskModel selectedTask = appDbContext.Tasks.Find(taskModel.Id);
-                    textBox.Text = selectedTask.Name;
+                    CategoryModel selectedCategory = appDbContext.Categories.Find(categoryModel.CategoryId);
+                    textBox.Text = selectedCategory.CategoryName;
+                }
+            }
+
+            else if (e.Key == Key.Return)
+            {
+                using (AppDbContext appDbContext = new AppDbContext())
+                {
+                    var updatedCateogry = textBox.Text;
+                    CategoryModel selectedCategory = appDbContext.Categories.Find(categoryModel.CategoryId);
+                    selectedCategory.CategoryName = updatedCateogry;
+                    appDbContext.SaveChanges();
+                    ReadCategory();
+                    ReadTask();
                 }
             }
         }
