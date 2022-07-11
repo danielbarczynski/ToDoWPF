@@ -56,23 +56,31 @@ namespace ToDo
             using (AppDbContext appDbContext = new AppDbContext())
             {
                 CategoryModel categoryModel = categoryList.SelectedItem as CategoryModel;
+                var selectedIndex = categoryList.SelectedIndex;
                 var task = newTask.Text;
+
                 try
                 {
-                    if (task.Length > 0)
+                    if (categoryModel.CategoryName == "All")
+                    {
+                        MessageBoxResult result = MessageBox.Show
+                        ("You cannot add tasks to the \"All\" category.", "Error");
+                    }
+                    else if (task.Length > 0)
                     {
                         appDbContext.Tasks.Add(new TaskModel() { Name = task, CategoryModelId = categoryModel.CategoryId });
                         appDbContext.SaveChanges();
                         Tasks = appDbContext.Tasks.Where(x => x.CategoryModelId == categoryModel.CategoryId).ToList();
                         currentTasks.ItemsSource = Tasks;
-                        //ReadCategory();
+                        ReadCategory();
+
                     }
                 }
                 catch (NullReferenceException)
                 {
 
                 }
-
+                categoryList.SelectedIndex = selectedIndex;
                 newTask.Clear();
             }
         }
@@ -131,46 +139,7 @@ namespace ToDo
                 all.NumberOfTasks = countedTasks;
 
                 Categories = appDbContext.Categories.ToList();
-                //currentCategories.ItemsSource = catList;
                 categoryList.ItemsSource = catList;
-            }
-        }
-
-        public void UpdateTask()
-        {
-            using (AppDbContext appDbContext = new AppDbContext())
-            {
-                TaskModel taskModel = currentTasks.SelectedItem as TaskModel;
-                var task = newTask.Text;
-
-                if (task != null)
-                {
-                    TaskModel selectedTask = appDbContext.Tasks.Find(taskModel.Id);
-                    selectedTask.Name = task;
-                    appDbContext.SaveChanges();
-                    newTask.Clear();
-                    ReadCategory();
-                    ReadTask();
-                }
-            }
-        }
-
-        public void UpdateCategory()
-        {
-            using (AppDbContext appDbContext = new AppDbContext())
-            {
-                CategoryModel categoryModel = categoryList.SelectedItem as CategoryModel;
-                var category = newTask.Text;
-
-                if (category != null)
-                {
-                    CategoryModel selectedCategory = appDbContext.Categories.Find(categoryModel.CategoryId);
-                    selectedCategory.CategoryName = category;
-                    appDbContext.SaveChanges();
-                    newTask.Clear();
-                    ReadCategory();
-                    ReadTask();
-                }
             }
         }
 
@@ -179,6 +148,7 @@ namespace ToDo
             using (AppDbContext appDbContext = new AppDbContext())
             {
                 var checkbox = sender as CheckBox;
+                var selectedIndex = categoryList.SelectedIndex;
                 CategoryModel categoryModel = categoryList.SelectedItem as CategoryModel;
 
                 if (checkbox != null)
@@ -191,6 +161,8 @@ namespace ToDo
                     currentTasks.ItemsSource = Tasks;
                     ReadCategory();
                 }
+
+                categoryList.SelectedIndex = selectedIndex;
             }
         }
 
@@ -202,17 +174,25 @@ namespace ToDo
                 CategoryModel categoryModel = categoryList.SelectedItem as CategoryModel;
                 CategoryModel selectedCategory = appDbContext.Categories.Find(categoryModel.CategoryId);
 
-                MessageBoxResult result = MessageBox.Show
-                 ("Are you sure?", $"Delete Category {categoryModel.CategoryName}", MessageBoxButton.OKCancel,
-                  MessageBoxImage.Information, MessageBoxResult.OK);
-
-                if (result == MessageBoxResult.OK && selectedCategory.CategoryName != "All")
+                if (selectedCategory.CategoryName == "All")
                 {
-                    appDbContext.Categories.Remove(selectedCategory);
-                    appDbContext.SaveChanges();
-                    ReadCategory();
-                    ReadTask();
+                    MessageBox.Show("You cannot delete this category.", "Error");
                 }
+                else
+                {
+                    MessageBoxResult result = MessageBox.Show
+                    ("Are you sure?", $"Delete Category {categoryModel.CategoryName}", MessageBoxButton.OKCancel,
+                    MessageBoxImage.Information, MessageBoxResult.OK);
+
+                    if (result == MessageBoxResult.OK)
+                    {
+                        appDbContext.Categories.Remove(selectedCategory);
+                        appDbContext.SaveChanges();
+                        ReadCategory();
+                        ReadTask();
+                    }
+                }
+
             }
         }
 
@@ -269,7 +249,7 @@ namespace ToDo
         {
             object o = currentTasks.SelectedItem;
             ListViewItem lvi = (ListViewItem)currentTasks.ItemContainerGenerator.ContainerFromItem(o);
-
+            var selectedIndex = categoryList.SelectedIndex;
             TextBox textBox = FindByName("taskTextBox", lvi) as TextBox;
             TextBlock textBlock = FindByName("taskTextBlock", lvi) as TextBlock;
             CheckBox checkBox = FindByName("taskCheckBox", lvi) as CheckBox;
@@ -292,6 +272,7 @@ namespace ToDo
             {
                 using (AppDbContext appDbContext = new AppDbContext())
                 {
+                    CategoryModel categoryModel = categoryList.SelectedItem as CategoryModel;
                     var updatedTask = textBox.Text;
 
                     if (updatedTask.Length > 0)
@@ -299,8 +280,9 @@ namespace ToDo
                         TaskModel selectedTask = appDbContext.Tasks.Find(taskModel.Id);
                         selectedTask.Name = updatedTask;
                         appDbContext.SaveChanges();
+                        Tasks = appDbContext.Tasks.Where(x => x.CategoryModelId == categoryModel.CategoryId).ToList();
+                        currentTasks.ItemsSource = Tasks;
                         ReadCategory();
-                        ReadTask();
                     }
                 }
             }
@@ -310,6 +292,8 @@ namespace ToDo
                 textBox.Visibility = Visibility.Collapsed;
                 textBlock.Visibility = Visibility.Visible;
             }
+
+            categoryList.SelectedIndex = selectedIndex;
         }
 
         private void changeCategoryName(object sender, KeyEventArgs e)
@@ -323,7 +307,12 @@ namespace ToDo
 
             if (e.Key == Key.F2)
             {
-                if (categoryModel.CategoryName != "All")
+                if (categoryModel.CategoryName == "All")
+                {
+                    MessageBox.Show("You cannot modify this category.", "Error");
+                }
+
+                else
                 {
                     textBox.Visibility = Visibility.Visible;
                     textBlock.Visibility = Visibility.Hidden;
