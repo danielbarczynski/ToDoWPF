@@ -94,16 +94,6 @@ namespace ToDo
 
         private void newTask_KeyDown(object sender, KeyEventArgs e)
         {
-
-            //else if (categoryList.SelectedItem != null)
-            //{
-            //    if (e.Key == Key.Return)
-            //    {
-            //        UpdateCategory();
-            //        ReadCategory();
-            //    }
-            //}
-            //else
             if (e.Key == Key.Return)
             {
                 CreateTask();
@@ -203,12 +193,17 @@ namespace ToDo
 
         private void DeleteCategory(object sender, MouseButtonEventArgs e)
         {
+
             using (AppDbContext appDbContext = new AppDbContext())
             {
                 CategoryModel categoryModel = categoryList.SelectedItem as CategoryModel;
                 CategoryModel selectedCategory = appDbContext.Categories.Find(categoryModel.CategoryId);
 
-                if (selectedCategory.CategoryName != "All")
+                MessageBoxResult result = MessageBox.Show
+                 ("Are you sure?", $"Delete Category {categoryModel.CategoryName}", MessageBoxButton.OKCancel,
+                  MessageBoxImage.Information, MessageBoxResult.OK);
+
+                if (result == MessageBoxResult.OK && selectedCategory.CategoryName != "All")
                 {
                     appDbContext.Categories.Remove(selectedCategory);
                     appDbContext.SaveChanges();
@@ -363,6 +358,17 @@ namespace ToDo
                 textBox.Visibility = Visibility.Collapsed;
                 textBlock.Visibility = Visibility.Visible;
             }
+        }
+
+        private void newTask_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            textBox.Text = "";
+        }
+
+        private void Help(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Press F2 to modify task/category and Esc to escape.\nDouble click on category to delete it.\nYou cannot modify/delete the \"All\" category.");
         }
     }
 }
