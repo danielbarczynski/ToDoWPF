@@ -353,12 +353,16 @@ namespace ToDo
         private void newTask_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var textBox = sender as TextBox;
-            textBox.Text = "";
+
+            if (textBox.Text == "Your new task/category...")
+            {
+                textBox.Text = "";
+            }
         }
 
         private void Help(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Press F2 to modify task/category and Esc to escape.\nDouble click on category to delete it.\nNotice: You cannot modify/delete the \"All\" category.", "Help");
+            MessageBox.Show("Press F2 to modify task/category and Esc to escape.\nDouble click on category to delete it.", "Help");
         }
     }
 }
