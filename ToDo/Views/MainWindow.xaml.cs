@@ -236,28 +236,6 @@ namespace ToDo
             }
         }
 
-        private void changeTaskName(object sender, MouseButtonEventArgs e)
-        {
-            object o = currentTasks.SelectedItem;
-            ListViewItem lvi = (ListViewItem)currentTasks.ItemContainerGenerator.ContainerFromItem(o);
-
-            TextBox textBox = FindByName("taskTextBox", lvi) as TextBox;
-            TextBlock textBlock = FindByName("taskTextBlock", lvi) as TextBlock;
-            CheckBox checkBox = FindByName("taskCheckBox", lvi) as CheckBox;
-
-            textBox.Visibility = Visibility.Visible;
-            textBlock.Visibility = Visibility.Hidden;
-            checkBox.Visibility = Visibility.Collapsed;
-
-            TaskModel taskModel = currentTasks.SelectedItem as TaskModel;
-
-            using (AppDbContext appDbContext = new AppDbContext())
-            {
-                TaskModel selectedTask = appDbContext.Tasks.Find(taskModel.Id);
-                textBox.Text = selectedTask.Name;
-            }
-        }
-
         private FrameworkElement FindByName(string name, FrameworkElement root)
         {
             Stack<FrameworkElement> tree = new Stack<FrameworkElement>();
@@ -299,6 +277,31 @@ namespace ToDo
                     appDbContext.SaveChanges();
                     ReadCategory();
                     ReadTask();
+                }
+            }
+        }
+
+        private void changeTaskName(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.F2)
+            {
+                object o = currentTasks.SelectedItem;
+                ListViewItem lvi = (ListViewItem)currentTasks.ItemContainerGenerator.ContainerFromItem(o);
+
+                TextBox textBox = FindByName("taskTextBox", lvi) as TextBox;
+                TextBlock textBlock = FindByName("taskTextBlock", lvi) as TextBlock;
+                CheckBox checkBox = FindByName("taskCheckBox", lvi) as CheckBox;
+
+                textBox.Visibility = Visibility.Visible;
+                textBlock.Visibility = Visibility.Hidden;
+                checkBox.Visibility = Visibility.Collapsed;
+
+                TaskModel taskModel = currentTasks.SelectedItem as TaskModel;
+
+                using (AppDbContext appDbContext = new AppDbContext())
+                {
+                    TaskModel selectedTask = appDbContext.Tasks.Find(taskModel.Id);
+                    textBox.Text = selectedTask.Name;
                 }
             }
         }

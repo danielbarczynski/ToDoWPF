@@ -45,7 +45,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <ListView MouseDoubleClick="changeTaskName" Foreground="AntiqueWhite" Name="currentTasks" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="3" Background="#66290808" Margin="0 5 0 0">
+        <ListView KeyDown="changeTaskName" Foreground="AntiqueWhite" Name="currentTasks" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="3" Background="#66290808" Margin="0 5 0 0">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <WrapPanel>
