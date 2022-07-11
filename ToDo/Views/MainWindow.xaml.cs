@@ -243,5 +243,49 @@ namespace ToDo
 
             }
         }
+
+        private void changeTaskName(object sender, MouseButtonEventArgs e)
+        {
+            object o = currentTasks.SelectedItem;
+            ListViewItem lvi = (ListViewItem)currentTasks.ItemContainerGenerator.ContainerFromItem(o);
+
+            TextBox textBox = FindByName("taskTextBox", lvi) as TextBox;
+            TextBlock textBlock = FindByName("taskTextBlock", lvi) as TextBlock;
+            CheckBox checkBox= FindByName("taskCheckBox", lvi) as CheckBox;
+
+            textBox.Visibility = Visibility.Visible;
+            textBlock.Visibility = Visibility.Hidden;
+            checkBox.Visibility = Visibility.Collapsed;
+
+            using (AppDbContext appDbContext = new AppDbContext())
+            {
+                TaskModel taskModel = currentTasks.SelectedItem as TaskModel;
+                TaskModel selectedTask = appDbContext.Tasks.Find(taskModel.Id);
+                textBox.Text = selectedTask.Name;
+            }
+        }
+
+        private FrameworkElement FindByName(string name, FrameworkElement root)
+        {
+            Stack<FrameworkElement> tree = new Stack<FrameworkElement>();
+            tree.Push(root);
+
+            while (tree.Count > 0)
+            {
+                FrameworkElement current = tree.Pop();
+                if (current.Name == name)
+                    return current;
+
+                int count = VisualTreeHelper.GetChildrenCount(current);
+                for (int i = 0; i < count; ++i)
+                {
+                    DependencyObject child = VisualTreeHelper.GetChild(current, i);
+                    if (child is FrameworkElement)
+                        tree.Push((FrameworkElement)child);
+                }
+            }
+
+            return null;
+        }
     }
 }
