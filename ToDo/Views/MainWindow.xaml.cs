@@ -59,10 +59,13 @@ namespace ToDo
                 var task = newTask.Text;
                 try
                 {
-                    appDbContext.Tasks.Add(new TaskModel() { Name = task, CategoryModelId = categoryModel.CategoryId });
-                    appDbContext.SaveChanges();
-                    ReadCategory();
-                    ReadTask();
+                    if (task.Length > 0)
+                    {
+                        appDbContext.Tasks.Add(new TaskModel() { Name = task, CategoryModelId = categoryModel.CategoryId });
+                        appDbContext.SaveChanges();
+                        ReadCategory();
+                        ReadTask();
+                    }
                 }
                 catch (NullReferenceException)
                 {
@@ -78,11 +81,14 @@ namespace ToDo
             using (AppDbContext appDbContext = new AppDbContext())
             {
                 var category = newTask.Text;
-                appDbContext.Categories.Add(new CategoryModel() { CategoryName = category });
-                appDbContext.SaveChanges();
-                ReadCategory();
-                ReadTask();
-                newTask.Clear();
+                if (category.Length > 0)
+                {
+                    appDbContext.Categories.Add(new CategoryModel() { CategoryName = category });
+                    appDbContext.SaveChanges();
+                    ReadCategory();
+                    ReadTask();
+                    newTask.Clear();
+                }
             }
         }
 
@@ -201,10 +207,14 @@ namespace ToDo
             {
                 CategoryModel categoryModel = categoryList.SelectedItem as CategoryModel;
                 CategoryModel selectedCategory = appDbContext.Categories.Find(categoryModel.CategoryId);
-                appDbContext.Categories.Remove(selectedCategory);
-                appDbContext.SaveChanges();
-                ReadCategory();
-                ReadTask();
+
+                if (selectedCategory.CategoryName != "All")
+                {
+                    appDbContext.Categories.Remove(selectedCategory);
+                    appDbContext.SaveChanges();
+                    ReadCategory();
+                    ReadTask();
+                }
             }
         }
 
@@ -267,15 +277,14 @@ namespace ToDo
             TextBox textBox = FindByName("taskTextBox", lvi) as TextBox;
             TextBlock textBlock = FindByName("taskTextBlock", lvi) as TextBlock;
             CheckBox checkBox = FindByName("taskCheckBox", lvi) as CheckBox;
-
-            textBox.Visibility = Visibility.Visible;
-            textBlock.Visibility = Visibility.Hidden;
-            checkBox.Visibility = Visibility.Collapsed;
-
             TaskModel taskModel = currentTasks.SelectedItem as TaskModel;
 
             if (e.Key == Key.F2)
             {
+                textBox.Visibility = Visibility.Visible;
+                textBlock.Visibility = Visibility.Hidden;
+                checkBox.Visibility = Visibility.Collapsed;
+
                 using (AppDbContext appDbContext = new AppDbContext())
                 {
                     TaskModel selectedTask = appDbContext.Tasks.Find(taskModel.Id);
@@ -288,12 +297,22 @@ namespace ToDo
                 using (AppDbContext appDbContext = new AppDbContext())
                 {
                     var updatedTask = textBox.Text;
-                    TaskModel selectedTask = appDbContext.Tasks.Find(taskModel.Id);
-                    selectedTask.Name = updatedTask;
-                    appDbContext.SaveChanges();
-                    ReadCategory();
-                    ReadTask();
+
+                    if (updatedTask.Length > 0)
+                    {
+                        TaskModel selectedTask = appDbContext.Tasks.Find(taskModel.Id);
+                        selectedTask.Name = updatedTask;
+                        appDbContext.SaveChanges();
+                        ReadCategory();
+                        ReadTask();
+                    }
                 }
+            }
+
+            else if (e.Key == Key.Escape)
+            {
+                textBox.Visibility = Visibility.Collapsed;
+                textBlock.Visibility = Visibility.Visible;
             }
         }
 
@@ -304,18 +323,21 @@ namespace ToDo
 
             TextBox textBox = FindByName("categoryTextBox", lvi) as TextBox;
             TextBlock textBlock = FindByName("categoryTextBlock", lvi) as TextBlock;
-
-            textBox.Visibility = Visibility.Visible;
-            textBlock.Visibility = Visibility.Hidden;
-
             CategoryModel categoryModel = categoryList.SelectedItem as CategoryModel;
 
             if (e.Key == Key.F2)
             {
-                using (AppDbContext appDbContext = new AppDbContext())
+                if (categoryModel.CategoryName != "All")
                 {
-                    CategoryModel selectedCategory = appDbContext.Categories.Find(categoryModel.CategoryId);
-                    textBox.Text = selectedCategory.CategoryName;
+                    textBox.Visibility = Visibility.Visible;
+                    textBlock.Visibility = Visibility.Hidden;
+
+
+                    using (AppDbContext appDbContext = new AppDbContext())
+                    {
+                        CategoryModel selectedCategory = appDbContext.Categories.Find(categoryModel.CategoryId);
+                        textBox.Text = selectedCategory.CategoryName;
+                    }
                 }
             }
 
@@ -324,12 +346,22 @@ namespace ToDo
                 using (AppDbContext appDbContext = new AppDbContext())
                 {
                     var updatedCateogry = textBox.Text;
-                    CategoryModel selectedCategory = appDbContext.Categories.Find(categoryModel.CategoryId);
-                    selectedCategory.CategoryName = updatedCateogry;
-                    appDbContext.SaveChanges();
-                    ReadCategory();
-                    ReadTask();
+
+                    if (updatedCateogry.Length > 0)
+                    {
+                        CategoryModel selectedCategory = appDbContext.Categories.Find(categoryModel.CategoryId);
+                        selectedCategory.CategoryName = updatedCateogry;
+                        appDbContext.SaveChanges();
+                        ReadCategory();
+                        ReadTask();
+                    }
                 }
+            }
+
+            else if (e.Key == Key.Escape)
+            {
+                textBox.Visibility = Visibility.Collapsed;
+                textBlock.Visibility = Visibility.Visible;
             }
         }
     }
