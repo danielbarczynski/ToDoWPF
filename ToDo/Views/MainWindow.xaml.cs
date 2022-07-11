@@ -95,7 +95,6 @@ namespace ToDo
                     appDbContext.Categories.Add(new CategoryModel() { CategoryName = category });
                     appDbContext.SaveChanges();
                     ReadCategory();
-                    ReadTask();
                     newTask.Clear();
                 }
             }
@@ -106,8 +105,6 @@ namespace ToDo
             if (e.Key == Key.Return)
             {
                 CreateTask();
-                //ReadCategory();
-                //ReadTask();
             }
         }
 
@@ -299,6 +296,7 @@ namespace ToDo
         private void changeCategoryName(object sender, KeyEventArgs e)
         {
             object o = categoryList.SelectedItem;
+            var selectedIndex = categoryList.SelectedIndex;
             ListViewItem lvi = (ListViewItem)categoryList.ItemContainerGenerator.ContainerFromItem(o);
 
             TextBox textBox = FindByName("categoryTextBox", lvi) as TextBox;
@@ -338,8 +336,9 @@ namespace ToDo
                         selectedCategory.CategoryName = updatedCateogry;
                         appDbContext.SaveChanges();
                         ReadCategory();
-                        ReadTask();
                     }
+                    
+                    categoryList.SelectedIndex = selectedIndex;
                 }
             }
 
