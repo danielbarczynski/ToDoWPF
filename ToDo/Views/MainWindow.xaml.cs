@@ -236,8 +236,6 @@ namespace ToDo
                 {
 
                 }
-
-
             }
         }
 
@@ -368,7 +366,7 @@ namespace ToDo
 
         private void Help(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Press F2 to modify task/category and Esc to escape.\nDouble click on category to delete it.\nYou cannot modify/delete the \"All\" category.");
+            MessageBox.Show("Press F2 to modify task/category and Esc to escape.\nDouble click on category to delete it.\nNotice: You cannot modify/delete the \"All\" category.", "Help");
         }
     }
 }
