@@ -88,14 +88,6 @@ namespace ToDo
 
         private void newTask_KeyDown(object sender, KeyEventArgs e)
         {
-            //if (currentTasks.SelectedItem != null)
-            //{
-            //    if (e.Key == Key.Return)
-            //    {
-            //        UpdateTask();
-            //        ReadTask();
-            //    }
-            //}
 
             //else if (categoryList.SelectedItem != null)
             //{
@@ -251,15 +243,16 @@ namespace ToDo
 
             TextBox textBox = FindByName("taskTextBox", lvi) as TextBox;
             TextBlock textBlock = FindByName("taskTextBlock", lvi) as TextBlock;
-            CheckBox checkBox= FindByName("taskCheckBox", lvi) as CheckBox;
+            CheckBox checkBox = FindByName("taskCheckBox", lvi) as CheckBox;
 
             textBox.Visibility = Visibility.Visible;
             textBlock.Visibility = Visibility.Hidden;
             checkBox.Visibility = Visibility.Collapsed;
 
+            TaskModel taskModel = currentTasks.SelectedItem as TaskModel;
+
             using (AppDbContext appDbContext = new AppDbContext())
             {
-                TaskModel taskModel = currentTasks.SelectedItem as TaskModel;
                 TaskModel selectedTask = appDbContext.Tasks.Find(taskModel.Id);
                 textBox.Text = selectedTask.Name;
             }
@@ -286,6 +279,28 @@ namespace ToDo
             }
 
             return null;
+        }
+
+        private void taskTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            object o = currentTasks.SelectedItem;
+            ListViewItem lvi = (ListViewItem)currentTasks.ItemContainerGenerator.ContainerFromItem(o);
+
+            TextBox textBox = FindByName("taskTextBox", lvi) as TextBox;
+            TaskModel taskModel = currentTasks.SelectedItem as TaskModel;
+
+            if (e.Key == Key.Return)
+            {
+                using (AppDbContext appDbContext = new AppDbContext())
+                {
+                    var updatedTask = textBox.Text;
+                    TaskModel selectedTask = appDbContext.Tasks.Find(taskModel.Id);
+                    selectedTask.Name = updatedTask;
+                    appDbContext.SaveChanges();
+                    ReadCategory();
+                    ReadTask();
+                }
+            }
         }
     }
 }

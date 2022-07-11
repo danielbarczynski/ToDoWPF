@@ -50,7 +50,7 @@
                 <DataTemplate>
                     <WrapPanel>
                         <CheckBox Name="taskCheckBox"  Click="DeleteTask" VerticalAlignment="Center" Margin="0 0 5 0"></CheckBox>
-                        <TextBox Name="taskTextBox" Text="" Visibility="Collapsed" Width="150" TextAlignment="Left"/>
+                        <TextBox Name="taskTextBox" Text="" Visibility="Collapsed" Width="150" TextAlignment="Left" KeyDown="taskTextBox_KeyDown"/>
                         <TextBlock Name="taskTextBlock" Text="{Binding Name}"/>
                     </WrapPanel>
                 </DataTemplate>
