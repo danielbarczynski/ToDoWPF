@@ -63,8 +63,9 @@ namespace ToDo
                     {
                         appDbContext.Tasks.Add(new TaskModel() { Name = task, CategoryModelId = categoryModel.CategoryId });
                         appDbContext.SaveChanges();
-                        ReadCategory();
-                        ReadTask();
+                        Tasks = appDbContext.Tasks.Where(x => x.CategoryModelId == categoryModel.CategoryId).ToList();
+                        currentTasks.ItemsSource = Tasks;
+                        //ReadCategory();
                     }
                 }
                 catch (NullReferenceException)
@@ -97,8 +98,8 @@ namespace ToDo
             if (e.Key == Key.Return)
             {
                 CreateTask();
-                ReadCategory();
-                ReadTask();
+                //ReadCategory();
+                //ReadTask();
             }
         }
 
@@ -178,6 +179,7 @@ namespace ToDo
             using (AppDbContext appDbContext = new AppDbContext())
             {
                 var checkbox = sender as CheckBox;
+                CategoryModel categoryModel = categoryList.SelectedItem as CategoryModel;
 
                 if (checkbox != null)
                 {
@@ -185,8 +187,9 @@ namespace ToDo
                     TaskModel taskModel = appDbContext.Tasks.Find(task.Id);
                     appDbContext.Tasks.Remove(taskModel);
                     appDbContext.SaveChanges();
+                    Tasks = appDbContext.Tasks.Where(x => x.CategoryModelId == categoryModel.CategoryId).ToList();
+                    currentTasks.ItemsSource = Tasks;
                     ReadCategory();
-                    ReadTask();
                 }
             }
         }
