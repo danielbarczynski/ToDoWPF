@@ -12,6 +12,7 @@ namespace ToDo.Models
         [Key]
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
+        public int NumberOfTasks { get; set; }
         public virtual IEnumerable<TaskModel> Tasks{ get; set; }
     }
 }
