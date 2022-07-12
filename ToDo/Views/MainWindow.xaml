@@ -36,7 +36,7 @@
         <TextBlock Name="Today" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="3" FontSize="30" TextAlignment="Center" Margin="0 0 0 5"></TextBlock>
         <Button Click="Help" Content="?" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="3" Height="25"  FontSize="10" Width="25"  HorizontalAlignment="Right" Margin="0 0 0 0"></Button>
 
-        <ListView KeyDown="changeCategoryName" SelectionChanged="ShowTasks" MouseDoubleClick="DeleteCategory" Name="categoryList" Foreground="AntiqueWhite" Grid.Column="1" Width="200" Grid.Row="2" Background="#B2290808" Margin="0, 5, 5, 0" Grid.RowSpan="2">
+        <ListView KeyDown="UpdateCategory" SelectionChanged="ShowTasks" MouseDoubleClick="DeleteCategory" Name="categoryList" Foreground="AntiqueWhite" Grid.Column="1" Width="200" Grid.Row="2" Background="#B2290808" Margin="0, 5, 5, 0" Grid.RowSpan="2">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <WrapPanel>
@@ -47,7 +47,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <ListView KeyDown="changeTaskName" Foreground="AntiqueWhite" Name="currentTasks" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="3" Background="#66290808" Margin="0 5 0 0">
+        <ListView KeyDown="UpdateTask" Foreground="AntiqueWhite" Name="currentTasks" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="3" Background="#66290808" Margin="0 5 0 0">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <WrapPanel>
@@ -58,7 +58,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <TextBox PreviewMouseLeftButtonDown="newTask_MouseLeftButtonDown" Text="Your new task/category..." KeyDown="newTask_KeyDown" Name="newTask" Grid.Column="2" Grid.Row="3" FontSize="20" Background="#33100303" Foreground="#FFEEF7F7" Grid.ColumnSpan="3" Margin="0, 5, 0, 0"></TextBox>
+        <TextBox PreviewMouseLeftButtonDown="NewTaskText" Text="Your new task/category..." KeyDown="CreateTask" Name="newTask" Grid.Column="2" Grid.Row="3" FontSize="20" Background="#33100303" Foreground="#FFEEF7F7" Grid.ColumnSpan="3" Margin="0, 5, 0, 0"></TextBox>
         <!--<ComboBox Name="currentCategories" Grid.Column="4" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120"  SelectedIndex="0" Margin="0, 5, 0, 0">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
