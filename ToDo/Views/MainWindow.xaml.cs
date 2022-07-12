@@ -9,7 +9,9 @@ using System.Windows.Threading;
 using ToDo.Database;
 using ToDo.Models;
 
-// Z celów edukacyjych postanowiłem stworzyć tą aplikację bez wzorca MVVM oraz serwisów, by mieć porównanie do innego projektu i lepiej zrozumieć znaczenie ww. rzeczy. Także nie jest to najczystszy kod. Nie wprowadzałem też asynchroniczności ponieważ nie jest w tej aplikacji na razie potrzebna. Jest też kilka funkcji, które mam jeszcze w planach zaimplementować (np. sortowanie, wyszukiwanie czy powiązanie użytkownika z zadaniami), ale ponieważ terminy mnie gonią (m.in. chciałbym jeszcze dokończyć niektóre zadania z labów), a czasu mam niewiele, wrzucam projekt w obecnej formie. Jeśli starczy mi czasu, to wrzucę go jeszcze raz z nowymi funkcjami. 
+// Z celów edukacyjych postanowiłem stworzyć tą aplikację bez wzorca MVVM oraz serwisów, by mieć porównanie do innego projektu i lepiej zrozumieć znaczenie ww. rzeczy. Także nie jest to najczystszy kod. Nie wprowadzałem też asynchroniczności, ponieważ nie jest w tej aplikacji na chwilę obecną potrzebna (apka się nie freezuje). Tabele tylko 3 choć miminum są 4, ale stwierdziłem, że nie będe ich robił na siłę. Jest też kilka funkcji, które mam jeszcze w planach zaimplementować (np. sortowanie, wyszukiwanie czy powiązanie użytkownika z zadaniami), ale ponieważ terminy mnie gonią (m.in. chciałbym jeszcze dokończyć niektóre zadania z labów), a czasu mam niewiele, wrzucam projekt w obecnej formie. Jeśli starczy mi czasu, to wrzucę go jeszcze raz z nowymi funkcjami.
+
+// P.S Zrobiłem refaktoryzacje kodu, aby był bardziej czytelny.
 
 namespace ToDo
 {
