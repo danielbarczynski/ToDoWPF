@@ -253,12 +253,22 @@ namespace ToDo
             using (AppDbContext appDbContext = new AppDbContext())
             {
                 var category = newTask.Text;
+                int count = 0;
+
+                foreach (var item in appDbContext.Categories)
+                {
+                    count++;
+                }
+
                 if (category.Length > 0)
                 {
                     appDbContext.Categories.Add(new CategoryModel() { CategoryName = category });
                     appDbContext.SaveChanges();
                     ReadCategory();
                     newTask.Clear();
+                    newTask.Focus();
+                    newTask.SelectionStart = newTask.Text.Length;
+                    categoryList.SelectedIndex = count++;
                 }
             }
         }
@@ -288,12 +298,11 @@ namespace ToDo
         void UpdateCategory(object sender, KeyEventArgs e)
         {
             object o = categoryList.SelectedItem;
-            var selectedIndex = categoryList.SelectedIndex;
             ListViewItem lvi = (ListViewItem)categoryList.ItemContainerGenerator.ContainerFromItem(o);
-
             TextBox textBox = FindByName("categoryTextBox", lvi) as TextBox;
             TextBlock textBlock = FindByName("categoryTextBlock", lvi) as TextBlock;
             CategoryModel categoryModel = categoryList.SelectedItem as CategoryModel;
+            var selectedIndex = categoryList.SelectedIndex;
 
             if (e.Key == Key.F2)
             {
@@ -306,7 +315,6 @@ namespace ToDo
                 {
                     textBox.Visibility = Visibility.Visible;
                     textBlock.Visibility = Visibility.Hidden;
-
 
                     using (AppDbContext appDbContext = new AppDbContext())
                     {
@@ -353,6 +361,7 @@ namespace ToDo
                 {
                     MessageBox.Show("You cannot delete this category.", "Error");
                 }
+
                 else
                 {
                     MessageBoxResult result = MessageBox.Show
@@ -367,7 +376,6 @@ namespace ToDo
                         ReadTask();
                     }
                 }
-
             }
         }
     }
