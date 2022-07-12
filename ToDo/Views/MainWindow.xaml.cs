@@ -9,7 +9,7 @@ using System.Windows.Threading;
 using ToDo.Database;
 using ToDo.Models;
 
-// Z celów edukacyjych postanowiłem stworzyć tą aplikację bez wzorca MVVM oraz serwisów, by mieć porównanie do innego projektu i lepiej zrozumieć znaczenie ww. rzeczy. Także nie jest to najczystszy kod. Nie wprowadzałem też asynchroniczności ponieważ nie jest w tej aplikacji na razie potrzebna. Jest też kilka funkcji, które mam jeszcze w planach zaimplementować (np. powiązanie użytkownika z zadaniami), ale ponieważ terminy mnie gonią (m.in. chciałbym jeszcze dokończyć niektóre zadania z labów), a czasu mam niewiele, wrzucam projekt w obecnej formie. Jeśli starczy mi czasu, to wrzucę go jeszcze raz z nowymi funkcjami. 
+// Z celów edukacyjych postanowiłem stworzyć tą aplikację bez wzorca MVVM oraz serwisów, by mieć porównanie do innego projektu i lepiej zrozumieć znaczenie ww. rzeczy. Także nie jest to najczystszy kod. Nie wprowadzałem też asynchroniczności ponieważ nie jest w tej aplikacji na razie potrzebna. Jest też kilka funkcji, które mam jeszcze w planach zaimplementować (np. sortowanie, wyszukiwanie czy powiązanie użytkownika z zadaniami), ale ponieważ terminy mnie gonią (m.in. chciałbym jeszcze dokończyć niektóre zadania z labów), a czasu mam niewiele, wrzucam projekt w obecnej formie. Jeśli starczy mi czasu, to wrzucę go jeszcze raz z nowymi funkcjami. 
 
 namespace ToDo
 {
@@ -138,7 +138,9 @@ namespace ToDo
         {
             using (AppDbContext appDbContext = new AppDbContext())
             {
-                Tasks = appDbContext.Tasks.ToList();
+                var tasks = appDbContext.Tasks.Select(x => new TaskModel()
+                { Name = x.Name, Id = x.Id, CategoryModelId = x.CategoryModelId, CategoryTaskName = x.CategoryModel.CategoryName});
+                Tasks = tasks.ToList();
                 currentTasks.ItemsSource = Tasks;
                 categoryList.SelectedIndex = 0;
             }
@@ -147,10 +149,10 @@ namespace ToDo
         void UpdateTask(object sender, KeyEventArgs e)
         {
             object o = currentTasks.SelectedItem;
-            ListViewItem lvi = (ListViewItem)currentTasks.ItemContainerGenerator.ContainerFromItem(o);
-            TextBox textBox = FindByName("taskTextBox", lvi) as TextBox;
-            TextBlock textBlock = FindByName("taskTextBlock", lvi) as TextBlock;
-            CheckBox checkBox = FindByName("taskCheckBox", lvi) as CheckBox;
+            ListViewItem listViewItem = (ListViewItem)currentTasks.ItemContainerGenerator.ContainerFromItem(o);
+            TextBox textBox = FindByName("taskTextBox", listViewItem) as TextBox;
+            TextBlock textBlock = FindByName("taskTextBlock", listViewItem) as TextBlock;
+            CheckBox checkBox = FindByName("taskCheckBox", listViewItem) as CheckBox;
             TaskModel taskModel = currentTasks.SelectedItem as TaskModel;
             var selectedIndex = categoryList.SelectedIndex;
 
@@ -298,9 +300,9 @@ namespace ToDo
         void UpdateCategory(object sender, KeyEventArgs e)
         {
             object o = categoryList.SelectedItem;
-            ListViewItem lvi = (ListViewItem)categoryList.ItemContainerGenerator.ContainerFromItem(o);
-            TextBox textBox = FindByName("categoryTextBox", lvi) as TextBox;
-            TextBlock textBlock = FindByName("categoryTextBlock", lvi) as TextBlock;
+            ListViewItem listViewItem = (ListViewItem)categoryList.ItemContainerGenerator.ContainerFromItem(o);
+            TextBox textBox = FindByName("categoryTextBox", listViewItem) as TextBox;
+            TextBlock textBlock = FindByName("categoryTextBlock", listViewItem) as TextBlock;
             CategoryModel categoryModel = categoryList.SelectedItem as CategoryModel;
             var selectedIndex = categoryList.SelectedIndex;
 
@@ -319,6 +321,7 @@ namespace ToDo
                     using (AppDbContext appDbContext = new AppDbContext())
                     {
                         CategoryModel selectedCategory = appDbContext.Categories.Find(categoryModel.CategoryId);
+                        TaskModel taskModel = new TaskModel();
                         textBox.Text = selectedCategory.CategoryName;
                     }
                 }

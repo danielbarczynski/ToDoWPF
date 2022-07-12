@@ -14,5 +14,6 @@ namespace ToDo.Models
         public string Name { get; set; }
         public int CategoryModelId { get; set; }
         public virtual CategoryModel CategoryModel { get; set; }
+        public string CategoryTaskName { get; set; }
     }
 }
