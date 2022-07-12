@@ -11,12 +11,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ToDo.Database;
+using ToDo.Models;
 
 namespace ToDo
 {
-    /// <summary>
-    /// Interaction logic for SignUp.xaml
-    /// </summary>
     public partial class SignUp : Window
     {
         public SignUp()
@@ -26,8 +25,25 @@ namespace ToDo
 
         private void SubmitClick(object sender, RoutedEventArgs e)
         {
-            MainWindowNav();
-            Close();
+            var username = Username.Text;
+            var password = Password.Password;
+
+            using (AppDbContext appDbContext = new AppDbContext())
+            {
+                if (username.Length >= 3 && password.Length >= 8)
+                {
+                    appDbContext.Users.Add(new User { Username = username, Password = password });
+                    appDbContext.SaveChanges();
+                    MessageBox.Show("Successfully created account.", "Information");
+                    LoginWindowNav();
+                    Close();
+                }
+
+                else
+                {
+                    MessageBox.Show("Username: minmum 3 characters\nPassword: minimum 8 characters.", "Error");
+                }
+            }         
         }
 
         public void MainWindowNav()

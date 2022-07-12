@@ -16,9 +16,6 @@ using ToDo.Models;
 
 namespace ToDo
 {
-    /// <summary>
-    /// Interaction logic for Login.xaml
-    /// </summary>
     public partial class Login : Window
     {
         public Login()
@@ -29,7 +26,7 @@ namespace ToDo
         private void SubmitClick(object sender, RoutedEventArgs e)
         {
             var username = Username.Text;
-            var password = Password.Text;
+            var password = Password.Password;
 
             using (AppDbContext context = new AppDbContext())
             {
@@ -39,6 +36,10 @@ namespace ToDo
                 {
                     MainWindowNav();
                     Close();
+                }
+                else
+                {
+                    MessageBox.Show("Incorrect password or username.", "Error");
                 }
             }
         }

@@ -140,7 +140,7 @@ namespace ToDo
             {
                 var tasks = appDbContext.Tasks.Select(x => new TaskModel()
                 { Name = x.Name, Id = x.Id, CategoryModelId = x.CategoryModelId, CategoryTaskName = x.CategoryModel.CategoryName});
-                Tasks = tasks.ToList();
+                Tasks = tasks.OrderBy(x => x.CategoryTaskName).ToList();
                 currentTasks.ItemsSource = Tasks;
                 categoryList.SelectedIndex = 0;
             }
